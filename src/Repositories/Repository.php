@@ -2,6 +2,7 @@
 
 use Maclof\Kubernetes\Models\Model;
 use Maclof\Kubernetes\Models\DeleteOptions;
+use Maclof\Kubernetes\Models\Patch;
 
 abstract class Repository
 {
@@ -116,6 +117,18 @@ abstract class Repository
 		$this->sendRequest('PUT', '/' . $this->uri . '/' . $model->getMetadata('name'), null, $model->getSchema());
 		return true;
 	}
+
+    /**
+     * Patch attributes
+     *
+     * @param  \Maclof\Kubernetes\Models\Patch $patch
+     * @return boolean
+     */
+    public function patch(Patch $patch)
+    {
+        $this->sendRequest('PATCH', '/' . $this->uri . '/' . $patch->getName(), null, $patch->getJsonEncodedUpdatedAttributes());
+        return true;
+    }
 
 	/**
 	 * Delete a model.
